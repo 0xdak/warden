@@ -396,3 +396,4 @@ main:focus { outline: none; }
 .demo-stage.is-paused *, .demo-stage.is-paused { animation-play-state: paused !important; }
 /* GitHub mark (filled icon) in header icon button and buttons */
 .icon-btn svg.gh, .btn svg.gh { fill: currentColor; stroke: none; }
+.real-demo-video { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--line, rgba(127,127,127,.25)); box-shadow: 0 8px 32px rgba(0,0,0,.12); margin-top: 16px; }

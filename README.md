@@ -9,8 +9,7 @@ before they happen, even when the agent runs with its own permission prompts swi
 [![Platform: Apple silicon & Intel](https://img.shields.io/badge/platform-Apple%20silicon%20%7C%20Intel-lightgrey.svg)](#install)
 [![selftest](https://github.com/0xdak/warden/actions/workflows/selftest.yml/badge.svg)](https://github.com/0xdak/warden/actions/workflows/selftest.yml)
 
-<!-- TODO: record docs/demo.gif (agent tries `cat .env` → blocked; `rm -rf ../other` → approval popup; Evidence log). Keep it under ~5 MB. -->
-<p align="center"><img src="docs/demo.gif" alt="Warden blocking an agent's attempt to read .env and asking before a delete outside the project" width="720"></p>
+<p align="center"><img src="docs/demo.gif" alt="Claude Code tries to read .env; Warden pauses it with an approval panel (Block / Always allow / Allow for project / Allow once), the user blocks it and Claude reports it could not read the file" width="900"></p>
 
 ## Why
 
