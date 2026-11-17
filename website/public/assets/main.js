@@ -191,3 +191,43 @@
     new IntersectionObserver(function (es) { inView = es[0].isIntersecting; sync(); }, { threshold: 0.25 }).observe(stage);
   } else { inView = true; sync(); }
 })();
+
+// Hero demo video: click to view it large.
+(function () {
+  var v = document.querySelector('.hero-video video');
+  if (!v) return;
+  v.setAttribute('tabindex', '0');
+  v.setAttribute('role', 'button');
+  v.setAttribute('title', 'Click to enlarge');
+  var box = null;
+  function close() {
+    if (!box) return;
+    box.remove(); box = null;
+    document.documentElement.classList.remove('lb-open');
+    v.play && v.play().catch(function () {});
+    v.focus();
+  }
+  function open() {
+    box = document.createElement('div');
+    box.className = 'lightbox';
+    box.setAttribute('role', 'dialog');
+    box.setAttribute('aria-modal', 'true');
+    box.setAttribute('aria-label', 'Demo video');
+    var big = document.createElement('video');
+    big.src = v.currentSrc || v.src;
+    big.muted = true; big.loop = true; big.autoplay = true; big.playsInline = true; big.controls = true;
+    try { big.currentTime = v.currentTime; } catch (e) {}
+    var btn = document.createElement('button');
+    btn.className = 'lightbox-close'; btn.type = 'button'; btn.setAttribute('aria-label', 'Close'); btn.textContent = '×';
+    box.appendChild(big); box.appendChild(btn);
+    box.addEventListener('click', function (e) { if (e.target !== big) close(); });
+    document.body.appendChild(box);
+    document.documentElement.classList.add('lb-open');
+    v.pause && v.pause();
+    big.play && big.play().catch(function () {});
+    btn.focus();
+  }
+  v.addEventListener('click', open);
+  v.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
