@@ -7,7 +7,29 @@ struct HomeView: View {
 
     var body: some View {
         Page(title: model.statusTitle, subtitle: "What needs your attention right now.") {
-            if model.settings.mode == .observe {
+            if !model.protection.hasProtection {
+                let p = model.protection
+                Card {
+                    HStack(alignment: .top, spacing: 10) {
+                        Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(Theme.caution).font(.title2)
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text("Not protecting any agent yet").font(.headline)
+                            Text(p.warningBody).foregroundStyle(.secondary)
+                            HStack {
+                                if let a = p.firstInstallable {
+                                    Button("Protect \(a.displayName)") { model.install(a) }.buttonStyle(.borderedProminent).tint(Theme.accent)
+                                    Button("Choose agents\u{2026}") { model.screen = .agents }
+                                } else {
+                                    Button("See supported agents") { NSWorkspace.shared.open(Brand.website) }
+                                    Button("Open Agents") { model.screen = .agents }
+                                }
+                            }
+                            if let e = model.lastError { Text(e).font(.caption).foregroundStyle(Theme.danger) }
+                        }
+                        Spacer()
+                    }
+                }
+            } else if model.settings.mode == .observe {
                 Card {
                     HStack(alignment: .top) {
                         Image(systemName: "eye").foregroundStyle(Theme.accent).font(.title2)

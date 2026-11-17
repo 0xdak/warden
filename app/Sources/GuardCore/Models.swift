@@ -188,6 +188,7 @@ public struct GuardSettings: Codable, Sendable, Equatable {
     public var customRules: [CustomRule] = []
     public var retentionDays: Int = 30
     public var notifyOnBlock: Bool = true
+    public var notifyInObserve: Bool = true
     public var autoRepairHooks: Bool = true
 
     public init() {}
@@ -211,6 +212,7 @@ public struct GuardSettings: Codable, Sendable, Equatable {
         customRules = (try? c.decode([CustomRule].self, forKey: .customRules)) ?? []
         retentionDays = (try? c.decode(Int.self, forKey: .retentionDays)) ?? d.retentionDays
         notifyOnBlock = (try? c.decode(Bool.self, forKey: .notifyOnBlock)) ?? d.notifyOnBlock
+        notifyInObserve = (try? c.decode(Bool.self, forKey: .notifyInObserve)) ?? d.notifyInObserve
         autoRepairHooks = (try? c.decode(Bool.self, forKey: .autoRepairHooks)) ?? d.autoRepairHooks
     }
 

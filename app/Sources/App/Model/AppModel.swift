@@ -55,6 +55,7 @@ final class AppModel {
     private var timers: [Timer] = []
     private var watchers: [DispatchSourceFileSystemObject] = []
     private var watchedFile = ""
+    private var observeNotifier = ObserveNotifier()
     private var lastRepairNote: [Agent: Date] = [:]
     let installer = Installer()
 
@@ -114,13 +115,15 @@ final class AppModel {
         }
     }
 
+    var protection: ProtectionSummary { ProtectionSummary(states: states) }
+
     var menuSymbol: String {
         switch status {
         case .protected: "checkmark.shield"
         case .observing: "eye.trianglebadge.exclamationmark"
         case .paused: "shield.slash"
         case .attention: "exclamationmark.shield"
-        case .unprotected: "shield"
+        case .unprotected: "exclamationmark.shield"
         }
     }
 
@@ -227,6 +230,7 @@ final class AppModel {
     }
 
     func install(_ a: Agent) {
+        lastError = nil
         do {
             try installer.install(a, hookSource: bundledHook)
             toast = "\(a.displayName) is now protected."
@@ -319,6 +323,11 @@ final class AppModel {
             if settings.notifyOnBlock {
                 for e in new where e.outcome == .blocked && e.via != .user {
                     notify("Blocked: \(e.ruleName ?? "risky action")", "\(e.agent.displayName) · \(e.summary.prefix(120))")
+                }
+            }
+            if settings.notifyInObserve && settings.mode == .observe && !settings.isPaused {
+                for e in new.suffix(20) where observeNotifier.shouldNotify(e) {
+                    if let n = ObserveNotifier.notice(for: e) { notify(n.title, n.body) }
                 }
             }
         }

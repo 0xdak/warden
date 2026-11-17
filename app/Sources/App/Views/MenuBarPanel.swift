@@ -14,6 +14,18 @@ struct MenuBarPanel: View {
                 }
                 Spacer()
             }
+            if !model.protection.hasProtection {
+                HStack(spacing: 8) {
+                    Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(Theme.caution)
+                    Text("No agent is protected").font(.callout.weight(.medium))
+                    Spacer()
+                    if let a = model.protection.firstInstallable {
+                        Button("Install") { model.install(a) }.buttonStyle(.borderedProminent).tint(Theme.accent)
+                    } else {
+                        Button("Agents") { MainWindow.show(.agents) }
+                    }
+                }
+            }
             if !model.pending.isEmpty {
                 Button { MainWindow.show(.review) } label: {
                     Label("\(model.pending.count) waiting for your answer", systemImage: "hand.raised.fill")
@@ -63,7 +75,7 @@ struct MenuBarPanel: View {
 
     var statusColor: Color {
         switch model.status {
-        case .protected: Theme.ok; case .observing: Theme.accent; case .paused, .attention: Theme.caution; case .unprotected: .secondary
+        case .protected: Theme.ok; case .observing: Theme.accent; case .paused, .attention, .unprotected: Theme.caution
         }
     }
 }

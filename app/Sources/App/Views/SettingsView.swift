@@ -25,6 +25,7 @@ struct SettingsView: View {
             Section("Agents") {
                 Toggle("Put hooks back automatically if they're removed", isOn: bind(\.autoRepairHooks))
                 Toggle("Notify me when something is blocked", isOn: bind(\.notifyOnBlock))
+                Toggle("Notify in observe mode", isOn: bind(\.notifyInObserve))
             }
             Section("Evidence") {
                 Picker("Keep activity for", selection: bind(\.retentionDays)) {

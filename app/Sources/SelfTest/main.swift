@@ -850,5 +850,35 @@ do {
     catch { check("cline: foreign hook refused, untouched", (try? String(contentsOfFile: p, encoding: .utf8)) == "#!/bin/sh\necho mine\n") }
 }
 
+do {
+    var st: [Agent: InstallState] = [.claude: .notInstalled, .codex: .notDetected, .cursor: .removed]
+    let a = ProtectionSummary(states: st)
+    check("protection: none installed", !a.hasProtection && a.firstInstallable == .claude && a.installable == [.claude, .cursor])
+    check("protection: warning names agents", a.warningBody.contains("Claude Code") && a.warningBody.contains("Cursor"))
+    check("protection: none detected message", ProtectionSummary(states: [:]).warningBody.contains("No supported agent"))
+    st[.claude] = .installed
+    check("protection: one installed", ProtectionSummary(states: st).hasProtection)
+    st[.claude] = .disabled("x")
+    check("protection: disabled hooks don't count", !ProtectionSummary(states: st).hasProtection)
+
+    setSettings { $0.mode = .observe }
+    expectClaude("observe notify: sample event", "cat .env", "none")
+    guard var base = lastEvent() else { fatalError("no event") }
+    func ev(_ out: EventRecord.Outcome, _ would: EventRecord.Outcome?, rule: String) -> EventRecord {
+        var e = base; e.outcome = out; e.wouldBe = would; e.ruleId = rule; return e
+    }
+    let t0 = Date()
+    var n = ObserveNotifier(interval: 5)
+    let e1 = ev(.observed, .blocked, rule: "r1")
+    check("observe notice text", ObserveNotifier.notice(for: e1)?.body.hasPrefix("Would have blocked `cat .env` in Claude Code") == true)
+    check("observe notice: first fires", n.shouldNotify(e1, now: t0))
+    check("observe notice: same rule throttled", !n.shouldNotify(e1, now: t0.addingTimeInterval(2)))
+    check("observe notice: other rule fires", n.shouldNotify(ev(.observed, .asked, rule: "r2"), now: t0.addingTimeInterval(2)))
+    check("observe notice: fires again after interval", n.shouldNotify(e1, now: t0.addingTimeInterval(6)))
+    check("observe notice: allowed/plain ignored", ObserveNotifier.notice(for: ev(.allowed, nil, rule: "r1")) == nil
+          && ObserveNotifier.notice(for: ev(.observed, .allowed, rule: "r1")) == nil)
+    check("settings: notifyInObserve defaults on", GuardSettings().notifyInObserve)
+}
+
 print("\n\(passes) passed, \(failures) failed")
 exit(failures == 0 ? 0 : 1)

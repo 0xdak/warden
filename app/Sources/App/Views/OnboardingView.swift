@@ -10,6 +10,13 @@ struct OnboardingView: View {
     @State private var observeFirst = true
     @State private var testResult: String?
     @State private var installErrors: [String] = []
+    @State private var touchedAgents = false
+    @State private var confirmSkip = false
+    /// Set once the user confirmed going on with no agent chosen, so the last step doesn't ask again.
+    @State private var skipAcknowledged = false
+
+    /// Nothing will be (or is) protected if no agent is chosen and none is installed yet.
+    var nothingChosen: Bool { chosen.isEmpty && !model.protection.hasProtection }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -21,19 +28,37 @@ struct OnboardingView: View {
             }
             Spacer()
             HStack {
-                if step > 0 && step < 3 { Button("Back") { step -= 1 } }
+                if step > 0 && (step < 3 || !model.protection.hasProtection) { Button(step == 3 ? "Back to agents" : "Back") { step = step == 3 ? 1 : step - 1 } }
                 Spacer()
                 if step < 3 {
-                    Button(step == 2 ? "Install & continue" : "Continue") { next() }
-                        .keyboardShortcut(.defaultAction).buttonStyle(.borderedProminent).tint(Theme.accent)
-                } else {
+                    if step == 2 && nothingChosen {
+                        Button("Continue without protection") { confirmSkip = true }
+                    } else {
+                        Button(step == 2 ? "Install & continue" : "Continue") { next() }
+                            .keyboardShortcut(.defaultAction).buttonStyle(.borderedProminent).tint(Theme.accent)
+                    }
+                } else if model.protection.hasProtection {
                     Button("Finish") { model.finishOnboarding() }.keyboardShortcut(.defaultAction).buttonStyle(.borderedProminent).tint(Theme.accent)
+                } else {
+                    Button("Finish without protection") { if skipAcknowledged { model.finishOnboarding() } else { confirmSkip = true } }
                 }
             }
         }
         .padding(28)
         .frame(width: 620, height: 520)
-        .onAppear { chosen = Set(Agent.allCases.filter { model.installer.isDetected($0) }) }
+        .onAppear { model.refreshStates(); preselect() }
+        .onChange(of: step) { _, new in if new == 1 { model.refreshStates(); preselect() } }
+        .confirmationDialog("Continue without protection?", isPresented: $confirmSkip) {
+            Button("Continue without protection", role: .destructive) { if step < 3 { skipAcknowledged = true; next() } else { model.finishOnboarding() } }
+            Button("Go back", role: .cancel) {}
+        } message: { Text("No agent will send actions to \(Brand.appName), so nothing is checked or recorded. You can install it later from Agents.") }
+    }
+
+    /// Pre-selects detected agents until the user changes the list. Re-run on entry to the agents step,
+    /// so a late detection (or an agent installed meanwhile) is still picked up.
+    func preselect() {
+        guard !touchedAgents else { return }
+        chosen = Set(Agent.allCases.filter { model.installer.isDetected($0) || model.states[$0] == .installed })
     }
 
     var welcome: some View {
@@ -56,7 +81,7 @@ struct OnboardingView: View {
             Text("We found these on your Mac. Each gets a hook in its own config file; a backup is saved first.").foregroundStyle(.secondary)
             ForEach(Agent.allCases) { a in
                 let found = model.installer.isDetected(a)
-                Toggle(isOn: Binding(get: { chosen.contains(a) }, set: { if $0 { chosen.insert(a) } else { chosen.remove(a) } })) {
+                Toggle(isOn: Binding(get: { chosen.contains(a) }, set: { touchedAgents = true; if $0 { chosen.insert(a) } else { chosen.remove(a) } })) {
                     HStack {
                         Text("Ask before \(a.displayName) acts")
                         Text(found ? "found" : "not found").font(.caption).foregroundStyle(found ? Theme.ok : .secondary)
@@ -72,6 +97,10 @@ struct OnboardingView: View {
             Text("How strict?").font(.title2.weight(.semibold))
             Picker("", selection: $preset) { ForEach(Preset.allCases) { Text($0.title).tag($0) } }.pickerStyle(.segmented).labelsHidden()
             Text(preset.blurb).foregroundStyle(.secondary)
+            if nothingChosen {
+                Label("No agent chosen. \(Brand.appName) won't protect anything until you install it into one.", systemImage: "exclamationmark.triangle.fill")
+                    .foregroundStyle(Theme.caution)
+            }
             Toggle("Start by recording a baseline (observe only)", isOn: $observeFirst)
             Text("Recommended. For the first while nothing is stopped; \(Brand.appName) logs what it would have done. Switch to enforcing from Home when you're happy.")
                 .font(.caption).foregroundStyle(.secondary)
@@ -80,13 +109,23 @@ struct OnboardingView: View {
 
     var done: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("You're set up").font(.title2.weight(.semibold))
+            if model.protection.hasProtection {
+                Text("You're set up").font(.title2.weight(.semibold))
+            } else {
+                Label("Not protected yet", systemImage: "exclamationmark.triangle.fill").font(.title2.weight(.semibold)).foregroundStyle(Theme.caution)
+                Text("No agent has the hook installed, so nothing is being checked.").foregroundStyle(.secondary)
+            }
             ForEach(Array(chosen).sorted { $0.rawValue < $1.rawValue }) { a in
                 if model.states[a] == .installed, let f = model.installer.followUp(a) {
                     Label("\(a.displayName): \(f)", systemImage: a == .codex ? "exclamationmark.circle" : "checkmark.circle")
                 }
             }
-            ForEach(installErrors, id: \.self) { Text($0).foregroundStyle(Theme.danger) }
+            ForEach(installErrors, id: \.self) { e in
+                Label("Couldn't install \u{2014} \(e)", systemImage: "xmark.octagon.fill")
+                    .foregroundStyle(Theme.danger).padding(8)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(Theme.danger.opacity(0.1), in: RoundedRectangle(cornerRadius: 8))
+            }
             HStack {
                 Button("Test the hook") { testResult = model.testRun() }
                 Button("Show a sample question") { model.showSampleApproval() }
@@ -100,10 +139,10 @@ struct OnboardingView: View {
         if step == 2 {
             model.update { $0.preset = preset; $0.mode = observeFirst ? .observe : .enforce }
             installErrors = []
-            for a in chosen where model.states[a] != .installed {
+            for a in chosen.sorted(by: { $0.rawValue < $1.rawValue }) where model.states[a] != .installed {
                 model.lastError = nil
                 model.install(a)
-                if let e = model.lastError { installErrors.append("\(a.displayName): \(e)") }
+                if let e = model.lastError { installErrors.append("\(a.displayName): \(e)"); model.lastError = nil }
             }
             model.toast = nil
         }
