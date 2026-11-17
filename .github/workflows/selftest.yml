@@ -1,0 +1,37 @@
+name: selftest
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: selftest-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  selftest:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Toolchain
+        run: |
+          sw_vers
+          swift --version
+
+      # Builds the Hook + SelfTest products and runs every check against a throwaway HOME
+      # (WARDEN_HOME_OVERRIDE). No GUI, keychain or signing needed.
+      - name: Self-test
+        run: scripts/selftest
+
+      - name: Release build
+        run: swift build -c release
