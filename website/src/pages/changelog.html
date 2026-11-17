@@ -7,6 +7,23 @@
   </div>
 </header>
 <div class="wrap narrow prose">
+  <section class="release" aria-labelledby="v011">
+    <div class="release-meta">
+      <h2 id="v011">0.1.1</h2>
+      <time datetime="2026-11-17">2026-11-17</time>
+    </div>
+    <div>
+      <h3>Harder to bypass, harder to miss</h3>
+      <ul>
+        <li>Secret rules follow symlinks, expand globs (<code>cat .e*</code>), resolve same-line variables and read <code>python -c</code> / <code>node -e</code> one-liners.</li>
+        <li>Deletes are judged on the real target path: home, system folders, parents of the project and <code>.git</code> are blocked; anything else outside the project asks. The approval panel shows the resolved path.</li>
+        <li>New checks: decoded scripts piped to a shell, download-then-run, cloud metadata endpoints, infra destroy commands, Docker host mounts and edits to shell startup files.</li>
+        <li>Oversized commands ask instead of slowing the hook down; a normal check takes a few milliseconds.</li>
+        <li>If no agent is protected, Home and the menu bar say so with a one-click install, and setup can't quietly finish without protection. Observe mode notifies you about what it would have stopped.</li>
+        <li>Fewer false alarms: listing <code>~/.ssh</code> or adding <code>.env</code> to <code>.gitignore</code> is no longer flagged.</li>
+      </ul>
+    </div>
+  </section>
   <section class="release" aria-labelledby="v010">
     <div class="release-meta">
       <h2 id="v010">0.1.0</h2>

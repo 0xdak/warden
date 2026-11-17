@@ -7,7 +7,7 @@
   "tagline": "A local checkpoint for AI coding agents.",
   "description": "{{name}} is a free, open-source (MIT) macOS menu-bar app that checks what AI coding agents are about to do. It blocks secret reads, destructive commands and data exfiltration, asks you about the grey areas, and keeps a local log. No account, nothing uploaded.",
   "_download": "downloadUrl is derived as /download/<name>.dmg. --check tolerates that one path being missing until the real .dmg is copied into public/download/.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "channel": "Beta",
   "releaseDate": "2026-11-12",
   "requirements": "macOS 14 or later · Apple silicon & Intel",
