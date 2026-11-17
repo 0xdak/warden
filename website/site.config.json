@@ -1,7 +1,7 @@
 {
   "_comment": "ALL brand values live here. Edit, then run `python3 build.py --check`. Renaming the product = change `name` (and `domain`/`contactEmail` if they change too). Never type the product name into src/: use {{name}}. `--check` fails if the name appears literally in src/ or public/assets/. Values may contain {{tokens}} (e.g. {{name}}).",
   "name": "Warden",
-  "domain": "warden.example",
+  "domain": "warden.dakcyber.com",
   "_siteUrl": "Derived as https://<domain>. Set `siteUrl` explicitly only if the site lives somewhere else.",
   "contactEmail": "ali@dakcyber.com",
   "tagline": "A local checkpoint for AI coding agents.",
