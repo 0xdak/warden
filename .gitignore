@@ -1,0 +1,23 @@
+.DS_Store
+.build/
+app/dist/
+website/dist/
+*.dmg
+*.dmg.sha256
+.uitest/
+.uitest2/
+__pycache__/
+node_modules/
+.env
+.env.*
+*.key
+*.pem
+*.p8
+*.p12
+.swiftpm/
+
+# Internal / local-only (keep out of the public repo)
+HANDOFF.md
+research/
+.uitest*/
+website/public/download/

@@ -1,0 +1,30 @@
+<!--page {"slug": "changelog", "title": "Changelog — {{name}}", "description": "What’s new in {{name}}, release by release."} -->
+<header class="page-head">
+  <div class="wrap narrow">
+    <p class="kicker">Changelog</p>
+    <h1>What’s new</h1>
+    <p>Every release, in plain words. The app doesn’t check for updates on its own, so new versions are announced here and on X at <a href="{{xUrl}}" rel="noopener">@{{xHandle}}</a>.</p>
+  </div>
+</header>
+<div class="wrap narrow prose">
+  <section class="release" aria-labelledby="v010">
+    <div class="release-meta">
+      <h2 id="v010">0.1.0</h2>
+      <time datetime="{{releaseDate}}">{{releaseDate}}</time>
+      <span class="tag">{{channel}}</span>
+    </div>
+    <div>
+      <h3>First public beta</h3>
+      <ul>
+        <li>Hook installer for Claude Code, Codex CLI, Cursor, Gemini CLI, Windsurf and Cline, with a backup before every change and a clean uninstall.</li>
+        <li>Built-in rules for secret files, destructive commands, git history rewrites, remote scripts piped to a shell, exfiltration and environment dumps.</li>
+        <li>Allow, ask, block and observe decisions, with Strict, Balanced and Permissive presets.</li>
+        <li>Approval popup with Allow once, Allow for project and Block. Return blocks on high-risk actions; no answer falls back to the rule’s default.</li>
+        <li>Activity log of every action, searchable by agent, project, decision and time, with secret-looking values masked.</li>
+        <li>Menu-bar status with today’s counts, recent blocks, and pausing for 15 minutes or an hour.</li>
+        <li>Warnings when an agent runs in a skip-permissions mode or when hooks are removed or disabled.</li>
+      </ul>
+      <p>This is a beta: expect rough edges, and tell us about them at <a href="mailto:{{contactEmail}}">{{contactEmail}}</a>.</p>
+    </div>
+  </section>
+</div>

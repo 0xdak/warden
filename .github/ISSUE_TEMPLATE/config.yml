@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Report a bypass or vulnerability privately
+    url: https://github.com/0xdak/warden/security/advisories/new
+    about: Working ways around Warden's rules go here, not in public issues.

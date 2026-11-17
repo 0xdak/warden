@@ -1,0 +1,50 @@
+<!--page {"slug": "terms", "title": "Terms of use — {{name}}", "description": "The terms for using the {{name}} app for macOS and this website."} -->
+<header class="page-head">
+  <div class="wrap narrow">
+    <p class="kicker">Legal</p>
+    <h1>Terms of use</h1>
+    <p>Last updated: <time datetime="{{legalUpdated}}">{{legalUpdated}}</time></p>
+  </div>
+</header>
+<article class="wrap narrow prose">
+  <p>These terms cover the {{name}} app for macOS (“the app”) and this website, both provided by {{company.name}} (“we”). By downloading or using the app you agree to them. If you don’t, please don’t use the app.</p>
+
+  <h2>1. Licence</h2>
+  <p>The app’s source code is published under the <a href="{{repoUrl}}/blob/main/LICENSE" rel="noopener">MIT License</a>. That licence governs your use, copying, modification and distribution of the code and of the builds we publish. These terms add only what the licence doesn’t cover: this website and how we describe the app.</p>
+
+  <h2>2. Beta software</h2>
+  <p>The app is in beta. Features may change, and it may contain bugs. Please report problems on <a href="{{issuesUrl}}" rel="noopener">GitHub</a> or to <a href="mailto:{{contactEmail}}">{{contactEmail}}</a>.</p>
+
+  <h2>3. What the app is and isn’t</h2>
+  <p>The app helps you control actions proposed by AI coding agents through those agents’ hook systems. It reduces risk; it does not eliminate it. It is not a sandbox, antivirus or backup tool, and it can’t see actions an agent performs without calling its hooks. The known gaps are described on <a href="/limits/">what it doesn’t catch</a>. You remain responsible for what you allow agents to do, for your secrets and for keeping backups of your work.</p>
+
+  <h2>4. Changes to your agent settings</h2>
+  <p>With your permission, the app adds hook entries to configuration files of the agents you choose and keeps backups of those files. Removing an agent in the app restores the backup. Agent vendors may change their hook formats at any time, which may affect protection until we update the app.</p>
+
+  <h2>5. Price</h2>
+  <p>The app is {{pricing.headline}}, with no license key, no account and no paid tier.</p>
+
+  <h2>6. Privacy</h2>
+  <p>The app processes data on your Mac only. Our <a href="/privacy/">privacy policy</a> explains this and forms part of these terms.</p>
+
+  <h2>7. Updates</h2>
+  <p>We may release updates that add, change or remove features, or stop developing the app. The version you have will keep working as long as macOS and your agents support it.</p>
+
+  <h2>8. No warranty</h2>
+  <p>The app is provided “as is” and “as available”, without warranties of any kind, express or implied, including fitness for a particular purpose and non-infringement, to the maximum extent permitted by law. We don’t warrant that the app will detect or prevent every harmful action.</p>
+
+  <h2>9. Limitation of liability</h2>
+  <p>To the maximum extent permitted by law, {{company.name}} is not liable for indirect, incidental or consequential damages, or for loss of data or secrets, arising from your use of the app or this website. The app is provided free of charge, and our total liability for any claim is limited accordingly, except where the law doesn’t allow such a limit (for example in cases of intent or gross negligence).</p>
+
+  <h2>10. Trademarks</h2>
+  <p>The {{name}} name and logo are ours; the MIT License covers the code, not the name or logo. Mac and macOS are trademarks of Apple Inc. Claude Code, Codex, Cursor, Gemini CLI, Windsurf, Cline and other product names belong to their owners and are mentioned only to describe compatibility. We aren’t affiliated with or endorsed by them.</p>
+
+  <h2>11. Changes to these terms</h2>
+  <p>We may update these terms and will change the date above when we do. Continuing to use the app after a change means you accept the new terms.</p>
+
+  <h2>12. Governing law</h2>
+  <p>These terms are governed by the laws of the Republic of Türkiye. Mandatory consumer protections of the country you live in still apply.</p>
+
+  <h2>13. Contact</h2>
+  <p>{{name}} is made by {{company.name}}. Questions: <a href="mailto:{{contactEmail}}">{{contactEmail}}</a> or <a href="{{xUrl}}" rel="noopener">@{{xHandle}}</a> on X.</p>
+</article>

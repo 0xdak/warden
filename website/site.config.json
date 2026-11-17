@@ -1,0 +1,65 @@
+{
+  "_comment": "ALL brand values live here. Edit, then run `python3 build.py --check`. Renaming the product = change `name` (and `domain`/`contactEmail` if they change too). Never type the product name into src/: use {{name}}. `--check` fails if the name appears literally in src/ or public/assets/. Values may contain {{tokens}} (e.g. {{name}}).",
+  "name": "Warden",
+  "domain": "warden.example",
+  "_siteUrl": "Derived as https://<domain>. Set `siteUrl` explicitly only if the site lives somewhere else.",
+  "contactEmail": "ali@dakcyber.com",
+  "tagline": "A local checkpoint for AI coding agents.",
+  "description": "{{name}} is a free, open-source (MIT) macOS menu-bar app that checks what AI coding agents are about to do. It blocks secret reads, destructive commands and data exfiltration, asks you about the grey areas, and keeps a local log. No account, nothing uploaded.",
+  "_download": "downloadUrl is derived as /download/<name>.dmg. --check tolerates that one path being missing until the real .dmg is copied into public/download/.",
+  "version": "0.1.0",
+  "channel": "Beta",
+  "releaseDate": "2026-11-12",
+  "requirements": "macOS 14 or later · Apple silicon & Intel",
+  "signing": "Signed with an Apple Developer ID and notarized by Apple.",
+  "sha256": "",
+  "xHandle": "0xdak_",
+  "repoUrl": "https://github.com/0xdak/warden",
+  "_repo": "repoUrl is the public source repository; releasesUrl/securityUrl/issuesUrl are derived from it in build.py.",
+  "company": {
+    "name": "0xdak",
+    "url": "https://github.com/0xdak",
+    "legalName": "0xdak"
+  },
+  "accent": {
+    "_comment": "Warden teal, taken from the app's own primary button. light/onLight are used on the light theme, dark/onDark on the dark theme. Verdict colours (allowed/blocked/ask) are separate and live in styles.css.",
+    "light": "#1E5C57",
+    "onLight": "#FFFFFF",
+    "dark": "#86C9BE",
+    "onDark": "#0B1A18"
+  },
+  "pricing": {
+    "_comment": "The app is free and open source under the MIT License. `headline` is the short phrase used in copy (\"{{name}} is {{pricing.headline}}\"). plans[] feed the JSON-LD offer (price 0). cta.type: download | mailto | link.",
+    "headline": "free and open source (MIT)",
+    "note": "The app is free and open source: full local protection, no account, no license key.",
+    "plans": [
+      {
+        "id": "free",
+        "name": "Free",
+        "price": "$0",
+        "amount": 0,
+        "period": "MIT license · no account",
+        "blurb": "Everything the app does, on your Mac. No sign-up, no card, no paid tier. The source is on GitHub.",
+        "features": [
+          "All supported agents: Claude Code, Codex CLI, Cursor, Gemini CLI, Windsurf, Cline",
+          "Allow, ask, observe and block decisions",
+          "Built-in rules for secrets, destructive commands and exfiltration",
+          "Approval popup with per-project memory",
+          "Searchable local activity log, secrets masked",
+          "Strict, Balanced and Permissive presets"
+        ],
+        "available": true,
+        "featured": true,
+        "cta": {
+          "type": "download",
+          "label": "Download free"
+        }
+      }
+    ]
+  },
+  "testimonials": {
+    "_comment": "Only REAL quotes, with permission. Each item: {quote, name, role, url}. While the list is empty the site shows an invitation to beta testers instead.",
+    "items": []
+  },
+  "legalUpdated": "2026-11-12"
+}

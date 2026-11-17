@@ -1,0 +1,56 @@
+/* Blog pages only (loaded by blog.py). Builds on tokens, .page-head and .prose in styles.css. */
+.blog-head { padding-bottom: var(--s-6); }
+.blog-index { padding-bottom: var(--s-8); }
+.post-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.post-card { position: relative; padding: var(--s-6) 0; border-bottom: 1px solid var(--line); }
+.post-card h2 { font-size: clamp(1.4rem, 1.15rem + 1vw, 1.8rem); line-height: 1.15; margin: var(--s-2) 0 var(--s-3); }
+.post-card h2 a { color: var(--ink); text-decoration: none; }
+.post-card h2 a::after { content: ""; position: absolute; inset: 0; }
+.post-card h2 a:focus-visible { outline: none; }
+.post-card:has(h2 a:focus-visible) { outline: 2px solid var(--accent); outline-offset: 4px; }
+.post-card:hover h2 a { color: var(--accent); }
+.post-card > p:not(.post-meta) { color: var(--ink-2); max-width: 62ch; margin: 0 0 var(--s-3); }
+.post-meta { margin: 0; font: 400 var(--t-xs)/1.5 var(--font-mono); color: var(--ink-3); }
+.post-tags { list-style: none; display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 0; padding: 0; }
+.post-tags li { font: 400 var(--t-xs)/1.4 var(--font-mono); color: var(--ink-3); margin: 0 !important; }
+.post-tags li::before { content: "#"; opacity: .6; }
+
+.post-head { padding-bottom: var(--s-6); }
+.post-head h1 { font-size: clamp(2rem, 1.4rem + 2.4vw, 3.1rem); line-height: 1.08; }
+.post-back { margin: 0 0 var(--s-5) !important; font-size: var(--t-sm); }
+.post-back a { color: var(--ink-3); text-decoration: none; }
+.post-back a:hover { color: var(--accent); }
+.post-head .post-lede { margin-top: var(--s-4); font-size: var(--t-lg); line-height: 1.5; color: var(--ink-2); }
+.post-head .post-meta { margin-top: var(--s-4); }
+
+.post-body::before { content: ""; display: block; border-top: 1px solid var(--line); margin-bottom: var(--s-6); }
+.post-body h2:first-of-type { margin-top: var(--s-6); }
+.post-body h3 { scroll-margin-top: 24px; }
+.post-body p, .post-body li { line-height: 1.7; }
+.post-body a { overflow-wrap: anywhere; }
+.post-body hr { border: 0; border-top: 1px solid var(--line); margin: var(--s-7) 0; }
+.post-body .callout { margin: var(--s-5) 0; }
+.post-body pre { margin: var(--s-4) 0 var(--s-5); padding: var(--s-4) var(--s-5); font-size: .8125rem; tab-size: 2; }
+.post-body pre code { white-space: pre; }
+.post-body .table-wrap { margin: var(--s-5) 0; }
+.post-body table { width: 100%; border-collapse: collapse; font-size: var(--t-sm); }
+.post-body th, .post-body td { text-align: left; vertical-align: top; padding: 10px 14px 10px 0; border-bottom: 1px solid var(--line); }
+.post-body th { font-weight: 600; color: var(--ink); }
+.post-body td { color: var(--ink-2); }
+
+.toc { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: var(--s-4) 0; }
+.toc-h { font: 500 var(--t-xs)/1.4 var(--font-mono); color: var(--ink-3); margin: 0 !important; }
+.toc ol { margin: var(--s-2) 0 0; padding-left: 1.3em; font-size: var(--t-sm); }
+.toc a { color: var(--ink-2); text-decoration: none; }
+.toc a:hover { color: var(--accent); text-decoration: underline; }
+
+.post-cta { margin: var(--s-8) 0 var(--s-6); padding: var(--s-6) 0 0; border-top: 2px solid var(--ink); }
+.post-cta h2 { font-size: 1.6rem !important; margin: 0 0 var(--s-3) !important; }
+.post-cta p { margin: 0 0 var(--s-4); }
+.post-cta .cta-row { margin: 0; }
+.post-cta .post-cta-fine { margin: var(--s-4) 0 0; font: 400 var(--t-xs)/1.5 var(--font-mono); color: var(--ink-3) !important; }
+.prose .post-tags { padding-left: 0; margin-top: var(--s-4); }
+
+@media (max-width: 600px) {
+  .post-body pre { margin-left: -16px; margin-right: -16px; border-radius: 0; border-left: 0; border-right: 0; }
+}

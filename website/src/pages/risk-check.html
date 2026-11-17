@@ -1,0 +1,60 @@
+<!--page {"slug": "risk-check", "title": "Free exposure check: what can an AI agent reach on your Mac? — {{name}}", "description": "Eight read-only Terminal commands that show which secrets, risky settings and skip-permission aliases an AI coding agent on your Mac could reach today. Nothing to install."} -->
+<header class="page-head">
+  <div class="wrap narrow">
+    <p class="kicker">Free exposure check</p>
+    <h1>What could an agent reach on your Mac right now?</h1>
+    <p class="lede">An agent running as you can read anything you can. These eight commands show what that includes. They only read and print, they change nothing, and nothing leaves your Mac. Takes about five minutes.</p>
+  </div>
+</header>
+<article class="wrap narrow prose check">
+  <aside class="callout"><p>Replace <code>~/code</code> with the folder where your projects live. Read each command before running it, as you should with any command from a website.</p></aside>
+
+  <h2 id="c1">1. Credential files in your home folder</h2>
+  <pre><code>ls -ld ~/.ssh ~/.aws ~/.gnupg ~/.config/gcloud ~/.azure ~/.kube/config \
+  ~/.docker/config.json ~/.npmrc ~/.pypirc ~/.netrc ~/.git-credentials 2&gt;/dev/null</code></pre>
+  <p><strong>What it means:</strong> each line printed is a place where keys or tokens usually live. Every one of them is readable by an agent that can run <code>cat</code>.</p>
+
+  <h2 id="c2">2. <code>.env</code> files in your projects</h2>
+  <pre><code>find ~/code -maxdepth 4 -name '.env*' -not -name '*.example' -not -name '*.sample' \
+  -not -path '*/node_modules/*' 2&gt;/dev/null</code></pre>
+  <p><strong>What it means:</strong> these are the files agents open most often by accident, usually while “understanding the project config”.</p>
+
+  <h2 id="c3">3. Keys and certificates sitting in project folders</h2>
+  <pre><code>find ~/code -maxdepth 4 \( -name '*.pem' -o -name '*.key' -o -name 'id_*' \
+  -o -name '*.p12' -o -name 'credentials*.json' \) -not -path '*/node_modules/*' 2&gt;/dev/null</code></pre>
+  <p><strong>What it means:</strong> private keys inside a repo are one <code>git add .</code> or one agent read away from leaving your Mac.</p>
+
+  <h2 id="c4">4. Secrets in your shell environment</h2>
+  <pre><code>env | cut -d= -f1 | grep -iE 'key|token|secret|passw'</code></pre>
+  <p><strong>What it means:</strong> this prints variable <em>names</em> only. Agents inherit your environment, so a single <code>env</code> or <code>printenv</code> would show the values.</p>
+
+  <h2 id="c5">5. Claude Code: broad allows, bypass mode, hooks off</h2>
+  <pre><code>grep -nE 'Bash\(\*\)|"Bash"|bypassPermissions|disableAllHooks' \
+  ~/.claude/settings.json .claude/settings.json .claude/settings.local.json 2&gt;/dev/null</code></pre>
+  <p><strong>What it means:</strong> <code>Bash(*)</code> or a bare <code>Bash</code> in an allow list lets the agent run any command without asking. <code>bypassPermissions</code> as a default mode skips prompts entirely. <code>disableAllHooks</code> switches off every hook, including security ones. Run it inside a project folder to include that project’s settings.</p>
+
+  <h2 id="c6">6. Codex: approval and sandbox settings</h2>
+  <pre><code>grep -nE 'approval_policy|sandbox_mode' ~/.codex/config.toml 2&gt;/dev/null</code></pre>
+  <p><strong>What it means:</strong> <code>approval_policy = "never"</code> means Codex never stops to ask, and <code>sandbox_mode = "danger-full-access"</code> removes its sandbox. Together, the agent can do anything you can.</p>
+
+  <h2 id="c7">7. Aliases that skip permissions</h2>
+  <pre><code>grep -nE 'dangerously|--yolo' ~/.zshrc ~/.zprofile ~/.bashrc ~/.bash_profile 2&gt;/dev/null</code></pre>
+  <p><strong>What it means:</strong> an alias like <code>alias cc="claude --dangerously-skip-permissions"</code> makes the risky mode the everyday mode. That’s worth a deliberate decision, not a habit.</p>
+
+  <h2 id="c8">8. Secrets typed into shell history</h2>
+  <pre><code>grep -cE '(KEY|TOKEN|SECRET|PASSWORD)[A-Z_]*=' ~/.zsh_history ~/.bash_history 2&gt;/dev/null</code></pre>
+  <p><strong>What it means:</strong> a number above zero means some secret was typed on the command line at least once and is still in a plain-text history file.</p>
+
+  <h2 id="next">What to do with what you found</h2>
+  <ul>
+    <li><strong>Move secrets out of project folders</strong> where you can: a password manager’s CLI or the macOS Keychain can inject them at run time instead.</li>
+    <li><strong>Narrow broad allow rules</strong> to the commands you actually approve every day, such as <code>Bash(npm test)</code>.</li>
+    <li><strong>Add deny rules or hooks</strong> for secret paths. Our guide <a href="/blog/stop-claude-code-reading-env/">How to stop Claude Code from reading your .env file</a> walks through both.</li>
+    <li><strong>Clear old secrets from history</strong>, then rotate any key that was ever pasted into a terminal or chat.</li>
+  </ul>
+  <p>Or let {{name}} watch these paths and commands for every agent at once. It’s {{pricing.headline}}.</p>
+  <div class="cta-row">
+    <a class="btn btn-primary" href="{{downloadUrl}}" download>Download {{name}}</a>
+    <a class="btn btn-ghost" href="/#stops">What it stops</a>
+  </div>
+</article>

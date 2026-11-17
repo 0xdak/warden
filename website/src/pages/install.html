@@ -1,0 +1,66 @@
+<!--page {"slug": "install", "title": "Download {{name}} for Mac — install guide", "description": "Download {{name}} for macOS, install it in a few minutes, verify the checksum, and remove it cleanly if you change your mind."} -->
+<header class="page-head">
+  <div class="wrap narrow">
+    <p class="kicker">Download</p>
+    <h1>{{name}} for Mac</h1>
+    <p class="lede">A menu-bar app and a small hook helper. No account, nothing to sign up for.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary btn-lg" href="{{downloadUrl}}" download>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19.5h14"/></svg>
+        Download v{{version}} <span class="btn-note">free</span>
+      </a>
+    </div>
+    <ul class="dl-meta">
+      <li>{{channel}} · released <time datetime="{{releaseDate}}">{{releaseDate}}</time></li>
+      <li>{{requirements}}</li>
+      <li>{{signing}}</li>
+      <li>Also on <a href="{{releasesUrl}}" rel="noopener">GitHub Releases</a></li>
+    </ul>
+  </div>
+</header>
+
+<div class="wrap narrow prose">
+  <h2 id="steps">Install</h2>
+  <ol class="steps-install">
+    <li>
+      <h3>Open the disk image</h3>
+      <p>Double-click <code>{{name}}.dmg</code> and drag {{name}} into Applications.</p>
+    </li>
+    <li>
+      <h3>Open it</h3>
+      <p>The app is signed with an Apple Developer ID and notarized by Apple, so macOS only shows its usual “downloaded from the internet” confirmation on first launch.</p>
+    </li>
+    <li>
+      <h3>Pick agents and a preset</h3>
+      <p>Setup lists the agents it found. Choose which to protect and how strict to be: Strict, Balanced (recommended) or Permissive. You can start by recording a baseline, which logs what would be stopped without stopping anything.</p>
+    </li>
+    <li>
+      <h3>Restart running agents</h3>
+      <p>New sessions pick up the hook. Codex: run <code>/hooks</code> once and trust the new hook. Cline: switch the hook on in Cline’s Hooks tab. When the baseline looks right, press <strong>Start enforcing</strong> on Home.</p>
+    </li>
+  </ol>
+
+  <h2 id="verify">Verify the download</h2>
+  <p>Compare the file’s SHA-256 hash with the one published here before you open it.</p>
+  <pre class="code-block" tabindex="0"><code>shasum -a 256 ~/Downloads/{{name}}.dmg</code></pre>
+  <p>Expected for v{{version}}: <code class="hash">{{sha256Display}}</code></p>
+
+  <h2 id="source">Build from source</h2>
+  <p>{{name}} is open source under the MIT License. With the Command Line Tools installed (<code>xcode-select --install</code>, no Xcode needed):</p>
+  <pre class="code-block" tabindex="0"><code>git clone {{repoUrl}}.git
+cd "$(basename {{repoUrl}})/app"
+scripts/selftest       # runs every rule check against a throwaway home folder
+scripts/build_app.sh   # → dist/{{name}}.app</code></pre>
+  <p>The <a href="{{repoUrl}}" rel="noopener">repository</a> README has the details. A build you make yourself is signed ad hoc, so macOS asks you to confirm its first launch in <strong>System Settings → Privacy &amp; Security</strong>.</p>
+
+  <h2 id="what-changes">What it changes on your Mac</h2>
+  <ul>
+    <li>One hook entry in each protected agent’s settings file, such as <code>~/.claude/settings.json</code> or <code>~/.cursor/hooks.json</code>. Your own hooks and settings stay. A backup of each file is saved first.</li>
+    <li>A folder at <code>~/Library/Application Support/{{name}}</code> with settings, remembered decisions, the evidence log and the hook helper.</li>
+    <li>Nothing else. No admin rights, no Full Disk Access, no background services besides the menu-bar app.</li>
+  </ul>
+
+  <h2 id="uninstall">Uninstall</h2>
+  <p>In {{name}}, open <strong>Agents</strong> and press <strong>Remove</strong> for each agent; <strong>Restore backup</strong> puts back the exact file saved before install. Quit {{name}} from the menu bar and delete it from Applications. Optionally delete its folder in Application Support.</p>
+  <p>Deleted the app first? Remove the entries that point to <code>Application Support/{{name}}/bin</code> from the agent settings files, and agents will stop calling it.</p>
+</div>

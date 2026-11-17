@@ -1,0 +1,42 @@
+<!--page {"slug": "limits", "title": "What {{name}} doesn’t catch — coverage and limits", "description": "An honest list of what {{name}} can and can’t see in each AI coding agent, and the limits every hook-based guard shares."} -->
+<header class="page-head">
+  <div class="wrap narrow">
+    <p class="kicker">Coverage and limits</p>
+    <h1>What {{name}} doesn’t catch</h1>
+    <p class="lede">A security tool that claims to stop everything is either lying or a sandbox. {{name}} is neither. Here is where its view ends, so you can decide what else you need.</p>
+  </div>
+</header>
+<article class="wrap narrow prose">
+  <h2 id="matrix">Coverage per agent</h2>
+  <p>What each agent’s hook system lets {{name}} check <em>before</em> the action runs.</p>
+  <div class="table-wrap">
+    <table class="matrix">
+      <caption class="visually-hidden">Which actions can be checked before they run, per agent</caption>
+      <thead><tr><th scope="col">Agent</th><th scope="col">Shell commands</th><th scope="col">File reads</th><th scope="col">File writes</th><th scope="col">MCP tools</th><th scope="col">Native “ask”</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Claude Code</th><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+        <tr><th scope="row">Codex CLI</th><td>Yes</td><td>Through shell parsing</td><td>Yes (<code>apply_patch</code>)</td><td>Yes</td><td>No, {{name}}’s popup</td></tr>
+        <tr><th scope="row">Cursor</th><td>Yes</td><td>Yes</td><td>Partly (blocked at tool level; edit details arrive after)</td><td>Yes</td><td>Shell and MCP</td></tr>
+        <tr><th scope="row">Gemini CLI</th><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>No, {{name}}’s popup</td></tr>
+        <tr><th scope="row">Windsurf</th><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>No, {{name}}’s popup</td></tr>
+        <tr><th scope="row">Cline</th><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>No, {{name}}’s popup</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Cline checks only run after you switch the hook on in Cline’s Hooks tab. Not possible with hooks: Aider and other agents that have no pre-action hook.</p>
+
+  <h2 id="limits">Limits every hook-based guard shares</h2>
+  <ul>
+    <li><strong>Hooks are cooperative.</strong> They see what the agent declares. If an agent writes a script and runs it later, {{name}} sees <code>python build.py</code>, not what’s inside. Base64, string building and other obfuscation can get past pattern rules. Common tricks are caught by heuristics, not all of them.</li>
+    <li><strong>Hooks must be running.</strong> An agent started with hooks disabled, or a Codex hook you haven’t trusted yet, isn’t checked. {{name}} watches the config files and warns you if its hooks disappear, but it can’t force an agent to load them. Agent bugs can skip hooks for some paths too (there are open Claude Code issues about certain subagent paths).</li>
+    <li><strong>Some events aren’t covered.</strong> Hosted tools that run on the vendor’s servers (for example Codex’s web search) never pass through local hooks. Background sessions without a terminal may not fire hooks in some agents.</li>
+    <li><strong>It isn’t a sandbox.</strong> Processes started by an allowed command run with your full permissions. For code you don’t trust, also use a container, a VM or a separate macOS user.</li>
+    <li><strong>It doesn’t scan what the model writes.</strong> In the current release, secrets pasted into files or returned in tool output aren’t scanned. That’s on the roadmap.</li>
+    <li><strong>Network rules are about intent, not packets.</strong> {{name}} spots commands that send secret files to a host. It doesn’t monitor network traffic.</li>
+  </ul>
+
+  <h2 id="fail">When something fails</h2>
+  <p>Agents treat a crashing hook differently. Claude Code and Codex let the action through if a hook errors, so {{name}}’s helper is written to always answer with an explicit decision. Cursor hooks are installed with <code>failClosed</code>, so a failure blocks. If the menu-bar app isn’t running, hard blocks still apply; see the <a href="/#faq">FAQ</a> for how questions are handled.</p>
+
+  <p>Found a gap that isn’t listed? If it’s a working way around a rule, <a href="{{securityUrl}}" rel="noopener">report it privately on GitHub</a>; bypass reports are the most useful thing you can send us. For anything else, <a href="{{issuesUrl}}" rel="noopener">open an issue</a> or email <a href="mailto:{{contactEmail}}?subject=Coverage%20gap">{{contactEmail}}</a>. We’ll add it here, fix it, or both.</p>
+</article>

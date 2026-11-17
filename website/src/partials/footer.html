@@ -1,0 +1,31 @@
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <a class="brand" href="/">{{> logo}}<span class="brand-name">{{name}}</span></a>
+      <p>{{tagline}} Free and open source (MIT). Made by <a href="{{company.url}}" rel="noopener">{{company.name}}</a>.</p>
+    </div>
+    <nav class="footer-nav" aria-label="Footer">
+      <ul>
+        <li><a href="/install/">Download &amp; install</a></li>
+        <li><a href="/changelog/">Changelog</a></li>
+        <li><a href="/limits/">What it doesn’t catch</a></li>
+        <li><a href="/risk-check/">Exposure check</a></li>
+        <li><a href="/blog/">Blog</a></li>
+      </ul>
+      <ul>
+        <li><a href="/privacy/">Privacy</a></li>
+        <li><a href="/terms/">Terms</a></li>
+        <li><a href="{{repoUrl}}/blob/main/LICENSE" rel="noopener">MIT License</a></li>
+      </ul>
+      <ul>
+        <li><a href="{{repoUrl}}" rel="noopener">Source on GitHub</a></li>
+        <li><a href="mailto:{{contactEmail}}">{{contactEmail}}</a></li>
+        <li><a href="{{xUrl}}" rel="noopener">@{{xHandle}} on X</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="wrap footer-base">
+    <p>© {{year}} {{company.name}}. MIT License.</p>
+    <p>Claude Code, Codex, Cursor, Gemini CLI, Windsurf and Cline are trademarks of their respective owners. {{name}} is independent and not affiliated with or endorsed by them.</p>
+  </div>
+</footer>

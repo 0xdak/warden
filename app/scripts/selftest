@@ -1,0 +1,15 @@
+#!/bin/zsh
+# Builds the hook CLI + self-test and runs every check against a throwaway HOME.
+# Never touches the real ~/.claude, ~/.codex, ~/.cursor, ~/.gemini … (WARDEN_HOME_OVERRIDE).
+set -euo pipefail
+ROOT="${0:A:h:h}"
+source "$ROOT/scripts/brand.env"
+cd "$ROOT"
+swift build --product "$HOOK_TARGET" >/dev/null
+swift build --product SelfTest >/dev/null
+BIN="$(swift build --show-bin-path)"
+FAKE="$(mktemp -d "${TMPDIR:-/tmp}/guard-selftest.XXXXXX")"
+trap 'rm -rf "$FAKE"' EXIT
+# The installed hook keeps the real file name (agents' configs reference it).
+cp "$BIN/$HOOK_TARGET" "$FAKE/$HOOK_NAME"
+env "${ENV_PREFIX}HOME_OVERRIDE=$FAKE/home" HOME="$FAKE/home" "$BIN/SelfTest" "$FAKE/$HOOK_NAME"

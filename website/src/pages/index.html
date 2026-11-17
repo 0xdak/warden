@@ -1,0 +1,138 @@
+<!--page {"slug": "", "title": "{{name}}: a local checkpoint for AI coding agents on your Mac", "description": "{{description}}", "bodyClass": "home"} -->
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap hero-grid">
+    <h1 id="hero-title">A checkpoint between AI coding agents and your&nbsp;Mac.</h1>
+    <div class="hero-side">
+      <p class="lede">Claude Code, Codex, Cursor and the others check with {{name}} before every command and file read. Routine work goes straight through. Reading your keys, wiping folders or piping a script from the internet into a shell is stopped. The grey areas come to you.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary btn-lg" href="{{downloadUrl}}" download>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19.5h14"/></svg>
+          Download for Mac <span class="btn-note">free</span>
+        </a>
+        <a class="btn btn-ghost btn-lg" href="{{repoUrl}}" rel="noopener"><svg class="gh" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg> Star on GitHub</a>
+        <a class="link-quiet" href="/install/">Install guide</a>
+      </div>
+      <p class="fine mono">macOS 14+ · Apple silicon &amp; Intel · notarized · MIT</p>
+    </div>
+  </div>
+</section>
+
+<section class="demo-wrap" aria-label="How {{name}} handles an agent’s actions">
+  <div class="wrap">
+    {{> demo}}
+  </div>
+</section>
+
+<section id="how" class="block" aria-labelledby="how-title">
+  <div class="wrap block-grid">
+    <h2 id="how-title">How it works</h2>
+    <ol class="steps">
+      <li>
+        <h3>It uses the agent’s own hooks.</h3>
+        <p>Setup adds one entry to each agent’s settings file and saves a backup of that file first. No proxy, no kernel extension, nothing changes in how you start the agent.</p>
+      </li>
+      <li>
+        <h3>It decides on your Mac, before the action runs.</h3>
+        <p>A small helper checks each call against built-in rules: block the clear threats, ask about judgment calls, let everything else through. Hard blocks work even when the app is closed.</p>
+      </li>
+      <li>
+        <h3>It starts by watching.</h3>
+        <p>You can begin in observe mode. {{name}} logs what it would have stopped, you adjust the rules, and when the log looks right you press <em>Start enforcing</em>.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section id="stops" class="block" aria-labelledby="stops-title">
+  <div class="wrap block-grid">
+    <div>
+      <h2 id="stops-title">What it catches</h2>
+      <p class="block-note">Defaults on the Balanced preset. Any rule can be set to block, ask or only log.</p>
+    </div>
+    <div>
+      <table class="catch">
+        <caption class="visually-hidden">Built-in rule groups, examples and their default decision</caption>
+        <thead><tr><th scope="col">What</th><th scope="col">For example</th><th scope="col">Default</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Secret files</th><td><code>.env</code> <code>~/.ssh/id_ed25519</code> <code>~/.aws/credentials</code> Keychain lookups</td><td><span class="chip v-block">Block</span></td></tr>
+          <tr><th scope="row">Destructive commands</th><td><code>rm -rf ~</code> <code>dd of=/dev/disk2</code> <code>diskutil eraseDisk</code></td><td><span class="chip v-block">Block</span></td></tr>
+          <tr><th scope="row">Data leaving your Mac</th><td><code>curl -d @.env https://…</code> secrets sent with <code>nc</code> or <code>scp</code></td><td><span class="chip v-block">Block</span></td></tr>
+          <tr><th scope="row">Download and run</th><td><code>curl -fsSL https://… | sh</code></td><td><span class="chip v-ask">Ask</span></td></tr>
+          <tr><th scope="row">Risky git</th><td><code>git push --force</code> <code>git reset --hard</code> pushes to <code>main</code></td><td><span class="chip v-ask">Ask</span></td></tr>
+          <tr><th scope="row">Safety switched off</th><td><code>--dangerously-skip-permissions</code> <code>--yolo</code> edits to hook settings</td><td><span class="chip v-ask">Ask</span> <span class="chip v-block">Block</span></td></tr>
+        </tbody>
+      </table>
+      <p class="block-foot">It isn’t a sandbox, and hooks only see what an agent declares. <a href="/limits/">What it doesn’t catch</a></p>
+    </div>
+  </div>
+</section>
+
+<section id="agents" class="block" aria-labelledby="agents-title">
+  <div class="wrap block-grid">
+    <h2 id="agents-title">Works with</h2>
+    <div>
+      <ul class="agents">
+        <li><b>Claude Code</b><span>terminal, IDE extensions</span></li>
+        <li><b>Codex CLI</b><span>trust the hook once with <code>/hooks</code></span></li>
+        <li><b>Cursor</b><span>editor and agent</span></li>
+        <li><b>Gemini CLI</b><span>terminal</span></li>
+        <li><b>Windsurf</b><span>Cascade</span></li>
+        <li><b>Cline</b><span>switch the hook on in Cline</span></li>
+      </ul>
+      <p class="block-foot">Setup finds the ones installed on your Mac. <a href="/limits/#matrix">What each agent lets {{name}} see</a></p>
+    </div>
+  </div>
+</section>
+
+<section id="privacy" class="block block-quiet" aria-labelledby="privacy-title">
+  <div class="wrap block-grid">
+    <h2 id="privacy-title">Stays on this Mac</h2>
+    <div class="privacy">
+      <p class="privacy-line">No account. No telemetry. The app makes no network requests of its own.</p>
+      <p>Decisions and the evidence log live in <code>~/Library/Application Support/{{name}}</code>. Keys, tokens and passwords are masked before anything is written. {{name}} is {{pricing.headline}}, with no license key, no paid tier and no trial clock. <a href="/privacy/">Privacy policy</a></p>
+    </div>
+  </div>
+</section>
+
+<section id="faq" class="block" aria-labelledby="faq-title">
+  <div class="wrap block-grid">
+    <h2 id="faq-title">Questions</h2>
+    <div class="faq">
+      <details>
+        <summary>Does it slow the agent down?</summary>
+        <div><p>Not noticeably. Each check is a small native program that answers from local rules, with no network round trip. You only wait when {{name}} asks you something.</p></div>
+      </details>
+      <details>
+        <summary>What happens if the app isn’t running?</summary>
+        <div><p>Hard blocks still apply, because the helper decides on its own. For questions, Claude Code and Cursor fall back to their own permission prompt. For the other agents you choose what happens in Settings; the default is to block and tell the agent to ask you to open {{name}}.</p></div>
+      </details>
+      <details>
+        <summary>What if I don’t answer a popup?</summary>
+        <div><p>After 60 seconds the action is blocked. Both the wait and the fallback can be changed in Settings. On high-risk questions, Return and Esc both choose Block.</p></div>
+      </details>
+      <details>
+        <summary>Can an agent get around it?</summary>
+        <div><p>Sometimes. Hooks see what the agent says it will do, so a script written now and run later, or heavy obfuscation, can slip past pattern rules. {{name}} also blocks edits to its own hooks and warns when they disappear. The full list is on <a href="/limits/">What it doesn’t catch</a>. Found a way around a rule? <a href="{{securityUrl}}" rel="noopener">Report it privately</a>.</p></div>
+      </details>
+      <details>
+        <summary>Is it really free? Can I read the code?</summary>
+        <div><p>Yes. {{name}} is open source under the MIT License, with no paid tier. The rules, the hook helper and the app are all on <a href="{{repoUrl}}" rel="noopener">GitHub</a>, and you can build it yourself with the Command Line Tools. Release builds are signed with an Apple Developer ID and notarized by Apple.</p></div>
+      </details>
+      <details>
+        <summary>How do I remove it?</summary>
+        <div><p>On the Agents screen, press Remove for each agent. Only {{name}}’s entries are taken out, and Restore backup puts back the exact file saved before install. Then quit the app and delete it.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="closing" aria-labelledby="closing-title">
+  <div class="wrap closing-inner">
+    <h2 id="closing-title">Try it in observe mode for a day.</h2>
+    <div class="cta-row">
+      <a class="btn btn-primary btn-lg" href="{{downloadUrl}}" download>Download for Mac <span class="btn-note">free</span></a>
+      <a class="link-quiet" href="{{repoUrl}}" rel="noopener">Source on GitHub</a>
+      <a class="link-quiet" href="/changelog/">v{{version}} {{channel}}</a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,58 @@
+<!--page {"slug": "privacy", "title": "Privacy policy — {{name}}", "description": "How {{name}} handles data: decisions and logs stay on your Mac. No account, no telemetry, no uploads. This website uses no cookies or trackers."} -->
+<header class="page-head">
+  <div class="wrap narrow">
+    <p class="kicker">Legal</p>
+    <h1>Privacy policy</h1>
+    <p>Last updated: <time datetime="{{legalUpdated}}">{{legalUpdated}}</time></p>
+  </div>
+</header>
+<article class="wrap narrow prose">
+  <aside class="callout">
+    <p><strong>In short:</strong> {{name}} works on your Mac. It has no account system, no analytics and no telemetry. The commands, file paths and other details it checks are never sent to us or anyone else. This website doesn’t use cookies or trackers either.</p>
+  </aside>
+
+  <h2>Who we are</h2>
+  <p>{{name}} is made by <a href="{{company.url}}" rel="noopener">{{company.name}}</a>, referred to here as “we” or “us”. Contact: <a href="mailto:{{contactEmail}}">{{contactEmail}}</a>.</p>
+
+  <h2>The app</h2>
+  <h3>What it processes, and where</h3>
+  <p>When an AI coding agent you’ve connected is about to act, the agent passes details of that action to {{name}}’s hook helper. Depending on the agent and the action, these can include:</p>
+  <ul>
+    <li>the tool name (for example a shell command, file read or MCP tool);</li>
+    <li>the command text, file path or URL;</li>
+    <li>the project folder, the agent’s name and a session identifier;</li>
+    <li>for prompt checks, the prompt text.</li>
+  </ul>
+  <p>These are evaluated against your rules <strong>on your Mac only</strong>. To build the activity log, {{name}} stores a summary of each action and its decision in local log files inside its folder in your user Library. Before saving, values that look like secrets (keys, tokens, passwords) are masked and file contents are not stored. You choose how long the log is kept, and you can delete it at any time from the app.</p>
+  <p>When it installs hooks, {{name}} saves backup copies of the agent configuration files it changes, also locally, so it can restore them.</p>
+
+  <h3>What it doesn’t do</h3>
+  <ul>
+    <li>No user accounts. It never asks for your email.</li>
+    <li>No analytics, telemetry, advertising or third-party SDKs.</li>
+    <li>No uploads of code, prompts, commands, paths, logs, rules or secrets.</li>
+    <li>No automatic crash reports. If you want to send one, you email it yourself and see exactly what you share.</li>
+  </ul>
+
+  <h3>Network access</h3>
+  <p>The current version makes no network requests of its own. It doesn’t check for updates; new versions are listed in the <a href="/changelog/">changelog</a>. You can check this yourself: the source is on <a href="{{repoUrl}}" rel="noopener">GitHub</a>.</p>
+
+  <h2>This website</h2>
+  <ul>
+    <li><strong>No cookies, analytics or third-party scripts.</strong> No external fonts, trackers or embeds.</li>
+    <li><strong>Local preference.</strong> If you pick a light or dark theme, the choice is saved in your browser’s local storage, on your device only.</li>
+    <li><strong>Server logs.</strong> Our hosting provider processes standard request data (such as IP address, user agent and the page requested) to deliver the site and protect it from abuse. We don’t use it to identify or profile visitors.</li>
+  </ul>
+
+  <h2>If you contact us</h2>
+  <p>If you email us or message us on X, we use what you send only to reply and help you. Issues and discussions on GitHub are public and governed by GitHub’s own privacy policy. We don’t add you to a mailing list.</p>
+
+  <h2>Your rights</h2>
+  <p>Depending on where you live, laws such as Türkiye’s KVKK (Law No. 6698) or the EU GDPR give you rights to access, correct or delete personal data. The app doesn’t send us personal data; what we may hold is what you sent us yourself. Write to <a href="mailto:{{contactEmail}}">{{contactEmail}}</a> for any request.</p>
+
+  <h2>Children</h2>
+  <p>{{name}} is a developer tool and isn’t directed at children.</p>
+
+  <h2>Changes</h2>
+  <p>If this policy changes, we’ll update the date above and note meaningful changes in the <a href="/changelog/">changelog</a>.</p>
+</article>
