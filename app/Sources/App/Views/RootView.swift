@@ -43,8 +43,10 @@ struct RootView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             }
         }
-        .sheet(isPresented: Binding(get: { !model.onboardingDone }, set: { if !$0 { model.finishOnboarding() } })) {
-            OnboardingView().environment(model)
+        // Only the onboarding's own Finish marks setup done. Dismissing the sheet any other way (Esc, window
+        // teardown) used to call finishOnboarding() and skip setup with nothing installed.
+        .sheet(isPresented: Binding(get: { !model.onboardingDone }, set: { _ in })) {
+            OnboardingView().environment(model).interactiveDismissDisabled()
         }
     }
 }

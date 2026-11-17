@@ -13,12 +13,12 @@ struct HomeView: View {
                     HStack(alignment: .top, spacing: 10) {
                         Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(Theme.caution).font(.title2)
                         VStack(alignment: .leading, spacing: 6) {
-                            Text("Not protecting any agent yet").font(.headline)
+                            Text("No agent is protected. \(Brand.appName) can't see anything yet.").font(.headline)
                             Text(p.warningBody).foregroundStyle(.secondary)
                             HStack {
                                 if let a = p.firstInstallable {
-                                    Button("Protect \(a.displayName)") { model.install(a) }.buttonStyle(.borderedProminent).tint(Theme.accent)
-                                    Button("Choose agents\u{2026}") { model.screen = .agents }
+                                    Button("Install\u{2026}") { model.screen = .agents }.buttonStyle(.borderedProminent).tint(Theme.accent)
+                                    Button("Protect \(a.displayName) now") { model.install(a) }
                                 } else {
                                     Button("See supported agents") { NSWorkspace.shared.open(Brand.website) }
                                     Button("Open Agents") { model.screen = .agents }
@@ -34,8 +34,9 @@ struct HomeView: View {
                     HStack(alignment: .top) {
                         Image(systemName: "eye").foregroundStyle(Theme.accent).font(.title2)
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Recording a baseline").font(.headline)
-                            Text("Nothing is stopped yet. \(Brand.appName) logs what it would have blocked or asked about, so you can tune rules first. \(model.wouldHaveBeenStopped) \(model.wouldHaveBeenStopped == 1 ? "action" : "actions") would have been stopped so far.")
+                            let n = model.wouldHaveBeenStopped
+                            Text("Observe mode: recording only, nothing is blocked").font(.headline)
+                            Text("\(n) \(n == 1 ? "action" : "actions") would have been blocked or asked about so far. Tune rules in Protect, then start enforcing.")
                                 .foregroundStyle(.secondary)
                         }
                         Spacer()

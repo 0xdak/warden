@@ -855,7 +855,11 @@ do {
     let a = ProtectionSummary(states: st)
     check("protection: none installed", !a.hasProtection && a.firstInstallable == .claude && a.installable == [.claude, .cursor])
     check("protection: warning names agents", a.warningBody.contains("Claude Code") && a.warningBody.contains("Cursor"))
-    check("protection: none detected message", ProtectionSummary(states: [:]).warningBody.contains("No supported agent"))
+    check("protection: none detected message", ProtectionSummary(states: [:]).warningBody.contains("No supported agent")
+          && ProtectionSummary(states: [:]).warningBody.contains("Agents \u{25B8} Install"))
+    check("protection: none detected", !ProtectionSummary(states: [.claude: .notDetected]).anyDetected && a.anyDetected)
+    let dis = ProtectionSummary(states: [.claude: .disabled("disableAllHooks is set")])
+    check("protection: hooks-off agent isn't 'none found'", dis.anyDetected && !dis.hasProtection && dis.warningBody.contains("turned off"))
     st[.claude] = .installed
     check("protection: one installed", ProtectionSummary(states: st).hasProtection)
     st[.claude] = .disabled("x")
@@ -868,13 +872,23 @@ do {
         var e = base; e.outcome = out; e.wouldBe = would; e.ruleId = rule; return e
     }
     let t0 = Date()
-    var n = ObserveNotifier(interval: 5)
-    let e1 = ev(.observed, .blocked, rule: "r1")
-    check("observe notice text", ObserveNotifier.notice(for: e1)?.body.hasPrefix("Would have blocked `cat .env` in Claude Code") == true)
+    var n = ObserveNotifier()
+    var e1 = ev(.observed, .blocked, rule: "r1"); e1.ruleName = "Environment files"
+    let n1 = ObserveNotifier.notice(for: e1)
+    check("observe notice title", n1?.title == "Would have blocked: Environment files", n1?.title ?? "nil")
+    check("observe notice body", n1?.body == "Claude Code \u{00B7} cat .env", n1?.body ?? "nil")
+    check("observe notice: asked title", ObserveNotifier.notice(for: ev(.observed, .asked, rule: "r9"))?.title.hasPrefix("Would have asked: ") == true)
+    var leak = e1; leak.summary = Redactor.redact("curl -H 'Authorization: Bearer sk-ant-api03-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' x")
+    check("observe notice: body stays redacted", ObserveNotifier.notice(for: leak).map { !$0.body.contains("AAAAAAAAAAAAAAAA") } == true)
     check("observe notice: first fires", n.shouldNotify(e1, now: t0))
-    check("observe notice: same rule throttled", !n.shouldNotify(e1, now: t0.addingTimeInterval(2)))
+    check("observe notice: same rule throttled", !n.shouldNotify(e1, now: t0.addingTimeInterval(30)))
     check("observe notice: other rule fires", n.shouldNotify(ev(.observed, .asked, rule: "r2"), now: t0.addingTimeInterval(2)))
-    check("observe notice: fires again after interval", n.shouldNotify(e1, now: t0.addingTimeInterval(6)))
+    check("observe notice: fires again after 60 s", n.shouldNotify(e1, now: t0.addingTimeInterval(61)))
+    var g = ObserveNotifier()
+    let burst = (0..<8).filter { g.shouldNotify(ev(.observed, .blocked, rule: "b\($0)"), now: t0.addingTimeInterval(Double($0))) }.count
+    check("observe notice: max 5 per minute overall", burst == 5, "\(burst)")
+    check("observe notice: global cap frees up after a minute", g.shouldNotify(ev(.observed, .blocked, rule: "b7"), now: t0.addingTimeInterval(61)))
+    check("observe notice: capped rule wasn't marked as notified", g.shouldNotify(ev(.observed, .blocked, rule: "b6"), now: t0.addingTimeInterval(62)))
     check("observe notice: allowed/plain ignored", ObserveNotifier.notice(for: ev(.allowed, nil, rule: "r1")) == nil
           && ObserveNotifier.notice(for: ev(.observed, .allowed, rule: "r1")) == nil)
     check("settings: notifyInObserve defaults on", GuardSettings().notifyInObserve)

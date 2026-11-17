@@ -17,7 +17,8 @@ struct MenuBarPanel: View {
             if !model.protection.hasProtection {
                 HStack(spacing: 8) {
                     Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(Theme.caution)
-                    Text("No agent is protected").font(.callout.weight(.medium))
+                    Text("No agent is protected. \(Brand.appName) can't see anything yet.").font(.callout.weight(.medium))
+                        .fixedSize(horizontal: false, vertical: true)
                     Spacer()
                     if let a = model.protection.firstInstallable {
                         Button("Install") { model.install(a) }.buttonStyle(.borderedProminent).tint(Theme.accent)
@@ -25,6 +26,10 @@ struct MenuBarPanel: View {
                         Button("Agents") { MainWindow.show(.agents) }
                     }
                 }
+                if let e = model.lastError { Text(e).font(.caption).foregroundStyle(Theme.danger).lineLimit(3) }
+            }
+            if model.protection.hasProtection && model.settings.mode == .observe && !model.settings.isPaused {
+                Label("Observe mode: recording only, nothing is blocked", systemImage: "eye").font(.caption).foregroundStyle(.secondary)
             }
             if !model.pending.isEmpty {
                 Button { MainWindow.show(.review) } label: {
