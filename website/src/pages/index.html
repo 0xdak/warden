@@ -1,8 +1,9 @@
 <!--page {"slug": "", "title": "{{name}}: a local checkpoint for AI coding agents on your Mac", "description": "{{description}}", "bodyClass": "home"} -->
-<section class="hero" aria-labelledby="hero-title">
+<section class="hero hero-with-video" aria-labelledby="hero-title">
   <div class="wrap hero-grid">
-    <h1 id="hero-title">A checkpoint between AI coding agents and your&nbsp;Mac.</h1>
-    <div class="hero-side">
+    <div class="hero-copy">
+      <h1 id="hero-title">A checkpoint between AI coding agents and your&nbsp;Mac.</h1>
+      <div class="hero-side">
       <p class="lede">Claude Code, Codex, Cursor and the others check with {{name}} before every command and file read. Routine work goes straight through. Reading your keys, wiping folders or piping a script from the internet into a shell is stopped. The grey areas come to you.</p>
       <div class="cta-row">
         <a class="btn btn-primary btn-lg" href="{{downloadUrl}}" download>
@@ -14,20 +15,17 @@
       </div>
       <p class="fine mono">macOS 14+ · Apple silicon &amp; Intel · notarized · MIT</p>
     </div>
+    </div>
+    <figure class="hero-video">
+      <video src="/media/demo.mp4" poster="/media/demo-poster.jpg" autoplay muted loop playsinline preload="auto" width="1440" height="840" aria-label="Claude Code tries to read a secret; {{name}} pauses it and the user blocks it"></video>
+      <figcaption class="fine">Real recording: Claude Code asks to read a secret, {{name}} pauses it, the user picks Block.</figcaption>
+    </figure>
   </div>
 </section>
 
 <section class="demo-wrap" aria-label="How {{name}} handles an agent’s actions">
   <div class="wrap">
     {{> demo}}
-  </div>
-</section>
-
-<section class="block real-demo" aria-labelledby="real-demo-title">
-  <div class="wrap">
-    <h2 id="real-demo-title">On a real Mac</h2>
-    <p>Claude Code is asked to print a secret from <code>.env</code>. {{name}} stops the command before it runs and asks. The user picks Block, and Claude explains it couldn’t read the file.</p>
-    <video class="real-demo-video" src="/media/demo.mp4" poster="/media/demo-poster.jpg" autoplay muted loop playsinline controls preload="metadata" width="1440" height="840"></video>
   </div>
 </section>
 
