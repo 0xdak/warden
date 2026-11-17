@@ -231,3 +231,43 @@
   v.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
 })();
+
+// After a download click: show what to do next (the app protects nothing until Install is pressed).
+(function () {
+  var links = document.querySelectorAll('a[href$=".dmg"]');
+  if (!links.length) return;
+  var name = (document.querySelector('meta[property="og:site_name"]') || {}).content || '';
+  var box = null, lastFocus = null;
+  function close() {
+    if (!box) return;
+    box.remove(); box = null;
+    document.documentElement.classList.remove('lb-open');
+    if (lastFocus) lastFocus.focus();
+  }
+  function open() {
+    lastFocus = document.activeElement;
+    box = document.createElement('div');
+    box.className = 'next-steps-backdrop';
+    box.innerHTML =
+      '<div class="next-steps" role="dialog" aria-modal="true" aria-labelledby="ns-title">' +
+      '<button class="next-steps-close" type="button" aria-label="Close">×</button>' +
+      '<p class="next-steps-kicker">Downloading ' + name + '.dmg…</p>' +
+      '<h2 id="ns-title">Three steps to turn protection on</h2>' +
+      '<ol>' +
+      '<li><strong>Open the DMG</strong> and drag ' + name + ' into Applications.</li>' +
+      '<li><strong>Open ' + name + '</strong> from Applications. A shield appears in the menu bar and setup opens.</li>' +
+      '<li><strong>Tick your agents and press <em>Install &amp; continue</em>.</strong> Nothing is protected until you do. Then restart running agent sessions.</li>' +
+      '</ol>' +
+      '<p class="next-steps-note">Skipped setup? Click the shield in the menu bar ▸ <strong>Agents</strong> ▸ <strong>Install</strong>.</p>' +
+      '<div class="next-steps-actions"><a class="btn btn-ghost" href="/install/">Full install guide</a><button class="btn btn-primary" type="button" data-close>Got it</button></div>' +
+      '</div>';
+    box.addEventListener('click', function (e) {
+      if (e.target === box || e.target.closest('.next-steps-close') || e.target.closest('[data-close]')) close();
+    });
+    document.body.appendChild(box);
+    document.documentElement.classList.add('lb-open');
+    box.querySelector('[data-close]').focus();
+  }
+  for (var i = 0; i < links.length; i++) links[i].addEventListener('click', function () { setTimeout(open, 150); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();

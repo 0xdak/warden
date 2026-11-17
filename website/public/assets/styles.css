@@ -414,3 +414,13 @@ main:focus { outline: none; }
 .lightbox video { width: auto; height: auto; max-width: 96vw; max-height: 92vh; border-radius: 10px; box-shadow: 0 20px 60px rgba(0,0,0,.5); background: #f9f9f9; cursor: default; }
 .lightbox-close { position: absolute; top: 14px; right: 18px; width: 40px; height: 40px; border-radius: 50%; border: 0; background: rgba(255,255,255,.14); color: #fff; font-size: 26px; line-height: 40px; cursor: pointer; }
 .lightbox-close:hover { background: rgba(255,255,255,.26); }
+.next-steps-backdrop { position: fixed; inset: 0; z-index: 1000; background: rgba(10,10,10,.55); display: flex; align-items: center; justify-content: center; padding: 16px; }
+.next-steps { position: relative; width: 100%; max-width: 520px; background: var(--bg-elev, var(--bg)); color: var(--ink); border-radius: 14px; padding: 28px 28px 22px; box-shadow: 0 24px 70px rgba(0,0,0,.35); }
+.next-steps h2 { font-size: 1.5rem; line-height: 1.15; margin: 0 0 14px; }
+.next-steps-kicker { font-size: .85rem; color: var(--ink-2, #666); margin: 0 0 6px; }
+.next-steps ol { margin: 0 0 14px; padding-left: 1.3em; }
+.next-steps li { margin: 0 0 10px; }
+.next-steps-note { font-size: .9rem; color: var(--ink-2, #666); margin: 0 0 18px; }
+.next-steps-actions { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; }
+.next-steps-close { position: absolute; top: 10px; right: 12px; width: 34px; height: 34px; border: 0; border-radius: 50%; background: transparent; color: inherit; font-size: 24px; line-height: 34px; cursor: pointer; opacity: .6; }
+.next-steps-close:hover { opacity: 1; }

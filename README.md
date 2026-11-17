@@ -23,9 +23,14 @@ before they happen, even when the agent runs with its own permission prompts swi
 
 ## Install
 
-**Download:** get the Developer ID signed and notarized `Warden.dmg` from
-[GitHub Releases](https://github.com/0xdak/warden/releases/latest). Optionally compare `shasum -a 256 Warden.dmg`
-with the `.sha256` file next to it. Open the DMG, drag **Warden** to Applications, open it.
+1. **Download** the Developer ID signed and notarized `Warden.dmg` from
+   [GitHub Releases](https://github.com/0xdak/warden/releases/latest) (optionally compare `shasum -a 256 Warden.dmg`
+   with the `.sha256` file next to it).
+2. **Open the DMG and drag Warden to Applications.**
+3. **Open Warden from Applications.** A shield appears in the menu bar and the setup window opens.
+4. **Tick your agents and press _Install & continue_.** Nothing is protected until you do this: it adds one hook to
+   each agent's settings (a backup is saved first). Skipped it? Menu-bar shield ▸ **Agents** ▸ **Install**.
+5. **Restart running agent sessions** so they load the hook.
 
 Requirements: macOS 14 or later, Apple silicon or Intel.
 
